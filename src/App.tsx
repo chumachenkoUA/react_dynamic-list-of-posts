@@ -29,6 +29,7 @@ export const App = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [isCommentError, setIsCommentError] = useState<boolean>(false);
+  const [isAddCommentError, setIsAddCommentError] = useState<boolean>(false);
   const [isCommentFormVisible, setIsCommentFormVisible] =
     useState<boolean>(false);
 
@@ -78,16 +79,22 @@ export const App = () => {
     setSelectedPost(null);
     setComments([]);
     setIsCommentError(false);
+    setIsAddCommentError(false);
     setIsCommentFormVisible(false);
   };
 
   const selectPost = (post: Post | null) => {
     setSelectedPost(post);
+    setIsAddCommentError(false);
     setIsCommentFormVisible(false);
   };
 
   const openCommentForm = () => {
     setIsCommentFormVisible(true);
+  };
+
+  const clearAddCommentError = () => {
+    setIsAddCommentError(false);
   };
 
   const onSubmit = async (data: CommentData) => {
@@ -96,6 +103,8 @@ export const App = () => {
     }
 
     try {
+      setIsAddCommentError(false);
+
       const newComment = await CommentService.createComment({
         postId: selectedPost.id,
         ...data,
@@ -103,7 +112,7 @@ export const App = () => {
 
       setComments(prev => [...prev, newComment]);
     } catch {
-      // for next logic
+      setIsAddCommentError(true);
     }
   };
 
@@ -210,8 +219,10 @@ export const App = () => {
                   comments={comments}
                   isLoadingComments={isLoadingComments}
                   isCommentError={isCommentError}
+                  isAddCommentError={isAddCommentError}
                   isCommentFormVisible={isCommentFormVisible}
                   openCommentForm={openCommentForm}
+                  clearAddCommentError={clearAddCommentError}
                   onSubmit={onSubmit}
                   deleteComment={deleteComment}
                 />

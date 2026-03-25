@@ -9,8 +9,10 @@ type Props = {
   comments: Comment[];
   isLoadingComments: boolean;
   isCommentError: boolean;
+  isAddCommentError: boolean;
   isCommentFormVisible: boolean;
   openCommentForm: () => void;
+  clearAddCommentError: () => void;
   onSubmit: (data: CommentData) => Promise<void>;
   deleteComment: (id: number) => Promise<void>;
 };
@@ -20,8 +22,10 @@ export const PostDetails: React.FC<Props> = ({
   comments,
   isLoadingComments,
   isCommentError,
+  isAddCommentError,
   isCommentFormVisible,
   openCommentForm,
+  clearAddCommentError,
   onSubmit,
   deleteComment,
 }) => {
@@ -97,7 +101,13 @@ export const PostDetails: React.FC<Props> = ({
           </button>
         )}
       </div>
-      {showCommentForm && <NewCommentForm onSubmit={onSubmit} />}
+      {showCommentForm && (
+        <NewCommentForm
+          isAddCommentError={isAddCommentError}
+          clearAddCommentError={clearAddCommentError}
+          onSubmit={onSubmit}
+        />
+      )}
     </div>
   );
 };

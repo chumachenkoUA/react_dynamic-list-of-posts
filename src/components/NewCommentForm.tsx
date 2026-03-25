@@ -3,10 +3,16 @@ import cn from 'classnames';
 import { CommentData } from '../types/Comment';
 
 type Props = {
+  isAddCommentError: boolean;
+  clearAddCommentError: () => void;
   onSubmit: (data: CommentData) => Promise<void>;
 };
 
-export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
+export const NewCommentForm: React.FC<Props> = ({
+  isAddCommentError,
+  clearAddCommentError,
+  onSubmit,
+}) => {
   const [authorName, setAuthorName] = useState<string>('');
   const [authorEmail, setAuthorEmail] = useState<string>('');
   const [comment, setComment] = useState<string>('');
@@ -53,6 +59,7 @@ export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
     setComment('');
     setAuthorEmail('');
     setAuthorName('');
+    clearAddCommentError();
   };
 
   return (
@@ -71,6 +78,7 @@ export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
             onChange={event => {
               setAuthorName(event.target.value);
               setNameError(false);
+              clearAddCommentError();
             }}
             placeholder="Name Surname"
             className={cn('input', {
@@ -114,6 +122,7 @@ export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
             onChange={event => {
               setAuthorEmail(event.target.value);
               setEmailError(false);
+              clearAddCommentError();
             }}
             className={cn('input', {
               'is-danger': emailError,
@@ -155,6 +164,7 @@ export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
             onChange={event => {
               setComment(event.target.value);
               setCommentError(false);
+              clearAddCommentError();
             }}
             className={cn('textarea', {
               'is-danger': commentError,
@@ -168,6 +178,10 @@ export const NewCommentForm: React.FC<Props> = ({ onSubmit }) => {
           </p>
         )}
       </div>
+
+      {isAddCommentError && (
+        <div className="notification is-danger">Failed to add a comment</div>
+      )}
 
       <div className="field is-grouped">
         <div className="control">
