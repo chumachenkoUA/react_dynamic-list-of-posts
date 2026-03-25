@@ -95,20 +95,28 @@ export const App = () => {
       return;
     }
 
-    const newComment = await CommentService.createComment({
-      postId: selectedPost.id,
-      ...data,
-    });
+    try {
+      const newComment = await CommentService.createComment({
+        postId: selectedPost.id,
+        ...data,
+      });
 
-    setComments(prev => [...prev, newComment]);
+      setComments(prev => [...prev, newComment]);
+    } catch {
+      // for next logic
+    }
   };
 
   const deleteComment = async (id: number) => {
+    const originalComments = [...comments];
+
+    setComments(comments.filter(comment => comment.id !== id));
+
     try {
-      setComments(comments.filter(comment => comment.id !== id));
       await CommentService.deleteComment(id);
     } catch {
-      setComments(comments);
+      setComments(originalComments);
+      setIsCommentError(true);
     }
   };
 

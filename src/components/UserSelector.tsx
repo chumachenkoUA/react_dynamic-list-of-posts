@@ -27,7 +27,7 @@ export const UserSelector: React.FC<Props> = ({
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const habdleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -36,10 +36,10 @@ export const UserSelector: React.FC<Props> = ({
       }
     };
 
-    document.addEventListener('click', habdleClickOutside);
+    document.addEventListener('click', handleClickOutside);
 
     return () => {
-      document.removeEventListener('click', habdleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
