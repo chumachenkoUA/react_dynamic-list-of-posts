@@ -16,7 +16,7 @@ import { Comment, CommentData } from './types/Comment';
 
 import * as PostService from './api/usersPosts';
 import * as UserService from './api/users';
-import * as CommentService from './api/comments';
+import * as CommentService from './api/postComments';
 
 export const App = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
